@@ -29,6 +29,7 @@ sqlite3
 ## 项目展示
 
 __销售页面__
+
 销售可以查看客户库，客户库可以进行一系列查询操作，可以在代码中自定义
 ![customerInfo](https://github.com/Traeric/AwesomeCRM/blob/master/photo/customerInfo.png)
 
@@ -43,10 +44,12 @@ __销售页面__
 ![enrollment2](https://github.com/Traeric/AwesomeCRM/blob/master/photo/enrollment2.png)
 
 __学生页面__
+
 提交作业
 ![submit homework](https://github.com/Traeric/AwesomeCRM/blob/master/photo/submit_homework.png)
 
 __老师页面__
+
 管理班级
 ![manage class](https://github.com/Traeric/AwesomeCRM/blob/master/photo/class_manage.png)
 
