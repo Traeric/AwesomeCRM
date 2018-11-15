@@ -1,0 +1,27 @@
+.clearFloat:after{content: ''; display: block; clear: both;}
+
+.filter select{margin-right: 30px;}
+span.arrow-icon{color: #337ab7; vertical-align: middle;}
+
+.selected-wrapper{display: flex; width: 60%;}
+.selected-wrapper .middle{flex: 0 0 20px; width: 20px;}
+.selected-wrapper .con-select{flex: 1; height: 340px;}
+.selected-wrapper .con-select .title{padding: 0 0 0 10px; width: 100%; height: 40px; line-height: 40px; background-color: #f8f8f8;
+    border: 1px solid #dedede; border-radius: 4px 4px 0 0;}
+.selected-wrapper .selected .title{background-color: #79aec8; color: #fff;}
+.selected-wrapper .con-select .available, .chosen{height: 30px; width: 100%; line-height: 30px; text-align: center;}
+.selected-wrapper .con-select p span.text{cursor: pointer;}
+.selected-wrapper .con-select p span.text:hover{color: #79aec8;}
+.selected-wrapper .con-select .search{padding: 5px 0 0 10px; height: 45px; border-left: 1px solid #dedede; border-right: 1px solid #dedede;}
+.selected-wrapper .con-select .search i{color: #555; cursor: help;}
+.selected-wrapper .con-select .search input{width: 85%;}
+.selected-wrapper .con-select select{width: 100%; height: 260px; border-radius: 0;}
+.selected-wrapper .select select{width: 100%; height: 215px; border-radius: 0;}
+
+.btn-group{display: flex; padding: 10px 15px; box-sizing: border-box; background-color: #f8f8f8; border: 1px solid #eee; border-radius: 8px;}
+.btn-group .delete-btn{flex: 1;}
+.btn-group .save-btn{flex: 0 0 502px;}
+
+.operation{margin-bottom: 30px;}
+
+

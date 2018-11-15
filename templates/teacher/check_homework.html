@@ -1,0 +1,52 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+{% load teacher_tags %}
+
+{% block header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/my_course.css' %}">
+{% endblock %}
+
+{% block right %}
+    <div class="page-header">
+        <h1>CRM-{{ current_course_record.class_grade.course.name }}第{{ current_course_record.id }}节课作业检查
+            <small>三人行，必有我师焉</small>
+        </h1>
+    </div>
+    <div id="wrap">
+        <div class="title">作业检查</div>
+        <div class="course-title">
+            <div class="con">学员id</div>
+            <div class="con">姓名</div>
+            <div class="con">到课情况</div>
+            <div class="con">是否批阅</div>
+            <div class="con">查看作业</div>
+        </div>
+        <!-- 详细条目 -->
+        {% for item in student_list %}
+            <div class="item">
+                <!-- 学员id -->
+                <div class="course con">{{ item.id }}</div>
+                <!-- 姓名 -->
+                <div class="date con">{{ item.user.name }}</div>
+                <!-- 到课情况 -->
+                {% get_study_record current_course_record item as study_record %}
+                <div class="rank con">{{ study_record.get_show_status_display }}</div>
+                <!-- 是否批阅 -->
+                {% if study_record.score %}
+                    <div class="rank con" style="color: #f00;">已批阅</div>
+                {% else %}
+                    <div class="rank con" style="color: #4a4a4a;">未批阅</div>
+                {% endif %}
+                <div class="details con"><a href="{% url 'check_homework_detail' current_course_record.id item.id %}">查看作业</a></div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+
+
+
+
+

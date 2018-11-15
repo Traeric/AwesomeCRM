@@ -1,0 +1,45 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+{% block header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/my_course.css' %}">
+{% endblock %}
+
+{% block right %}
+    <div class="page-header">
+        <h1>CRM-课程记录
+            <small>三人行，必有我师焉</small>
+        </h1>
+    </div>
+    <div id="wrap">
+        <div class="title">课程记录列表</div>
+        <div class="course-title">
+            <div class="con">日期</div>
+            <div class="con">课程节次</div>
+            <div class="con">授课老师</div>
+            <div class="con">本节主题</div>
+            <div class="con">本节内容</div>
+            <div class="con">有无作业</div>
+            <div class="con">作业需求</div>
+        </div>
+        <!-- 详细条目 -->
+        {% for item in course_record %}
+            <div class="item">
+                <div class="course con">{{ item.date | date:'Y-m-d' }}</div>
+                <div class="type con">{{ item.day_num }}</div>
+                <div class="date con">{{ item.teacher.name }}</div>
+                <div class="total_count con">{{ item.title }}</div>
+                <div class="take_count con">{{ item.content }}</div>
+                <div class="take_count con">{{ item.has_homework }}</div>
+                <div class="take_count con">{{ item.homework }}</div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+
+
+
+

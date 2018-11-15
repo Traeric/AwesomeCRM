@@ -1,0 +1,108 @@
+{% extends "awesomeadmin/base.html" %}
+{% load awesomeadmin_tags %}
+{% load staticfiles %}
+
+
+{% block header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/index1.css' %}">
+    <style>
+        /* 设置滚动条的样式 */
+        ::-webkit-scrollbar {
+            width: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="main-content">
+        <!-- 左边部分 -->
+        <div class="sidebar" role="navigation">
+            <div class="navbar-collapse">
+                <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right dev-page-sidebar mCustomScrollbar _mCS_1 mCS-autoHide mCS_no_scrollbar"
+                     id="cbp-spmenu-s1">
+                    <div class="scrollbar scrollbar1">
+                        <ul class="nav" id="side-menu">
+                            {% for role in request.user.role.select_related %}
+                                {% for menu in role.menus.select_related %}
+                                    <!-- 获取动态的url值 -->
+                                    {% get_dynamic_url menu.url_name menu.url_type as url_path %}
+                                    {% if url_path == request.path %}
+                                        <li class="active">
+                                            <a href="{{ url_path }}" style="color: #67d3e0;">
+                                                {% else %}
+                                        <li>
+                                        <a href="{{ url_path }}">
+                                    {% endif %}
+                                {% if forloop.counter0 == 0 %}
+                                    <i class="fa fa-home nav_icon"></i>
+                                {% elif forloop.counter0 == 1 %}
+                                    <i class="fa fa-cogs nav_icon"></i>
+                                {% elif forloop.counter0 == 2 %}
+                                    <i class="fa fa-book nav_icon"></i>
+                                {% else %}
+                                    <i class="fa fa-bar-chart nav_icon"></i>
+                                {% endif %}
+                                {{ menu.name }}
+                                </a>
+                                </li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!-- //sidebar-collapse -->
+                </nav>
+            </div>
+        </div>
+        <!-- 顶部 -->
+        <div class="sticky-header header-section ">
+            <div class="header-left">
+                <!--logo部分 -->
+                <div class="logo">
+                    <a href="#">
+                        <ul>
+                            <li><img src="{% static 'template/dashboard/images/logo1.png' %}" alt=""/></li>
+                            <li><h1>AwesomeCRM</h1></li>
+                            <div class="clearfix"></div>
+                        </ul>
+                    </a>
+                </div>
+                <!--//logo-->
+            </div>
+            <!-- 头像部分 -->
+            <div class="header-right">
+                <!--notification menu end -->
+                <div class="profile_details">
+                    <ul>
+                        <li class="dropdown profile_details_drop">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <div class="profile_img">
+                                    <span class="prfil-img"><img src="{% static 'template/dashboard/images/a.png' %}"
+                                                                 alt=""> </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu drp-mnu">
+                                <li><a href="javascript:void(0);"><i class="fa fa-cog"></i> 设置</a></li>
+                                <li><a href="javascript:void(0);"><i class="fa fa-user"></i> 个人信息</a></li>
+                                <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 用户名 -->
+                <button id="showLeftPush">{{ request.user.name }}</button>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!-- 中间部分 -->
+        <div id="page-wrapper">
+            {% block right %}
+            {% endblock %}
+        </div>
+    </div>
+    {% block js %}
+    {% endblock %}
+{% endblock %}
+

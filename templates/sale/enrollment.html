@@ -1,0 +1,270 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+{% block header %}
+    <link rel="icon" type="image/png" href="{% static 'template/enrollment/images/favicon.png' %}"/>
+    <title>学员报名表</title>
+    <!--style sheets-->
+    <link rel="stylesheet" media="screen" href="{% static 'template/enrollment/css/style.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/enrollment.css' %}">
+    <!-- 引入dropzone -->
+    <link rel="stylesheet" href="{% static 'plugins/dropzone/css/dropzone.css' %}">
+    <script src="{% static 'plugins/dropzone/js/dropzone.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="wrapper">
+
+        <!--logo here-->
+        <div class="logo"><a href="#"> <img src="{% static 'template/enrollment/images/logo.png' %}" width="276"
+                                            height="58" alt="logo"> </a></div>
+
+        <!--content starts-->
+        <div id="content">
+            <div class="launch"></div>
+
+            <!--divider with heading at center-->
+            <div class="divider">
+                <h4>学员报名合同</h4>
+            </div>
+
+            <!--countdown starts-->
+            <div class="countdown_bg">
+                <div id="defaultCountdown" class="countdown"></div>
+            </div>
+            <!--countdown ends-->
+
+            <div class="divider_small"></div>
+            <h1> 请填写下面的 <span>报名信息</span></h1>
+            请将下面的信息尽量的填写完整，这样我们可以根据您的信息为您安排更好的课程规划，在不允许改动的字段上请不要改动，否则提交的报名
+            信息将会作废，请务必按照要求填写，最后签订合同时请勾选同意合同，同意后您将可以提交个人信息然后进入报名的下一个阶段
+
+            <!--divider_small / do not remove clear below-->
+            <div class="divider_small"></div>
+            <br class="clear"/>
+            <h2>个人信息填写</h2>
+            <h3>Please write your personal info totally</h3>
+            <h2 style="color: #f00;">报名班级：{{ enrollment_obj.class_grade }}</h2>
+            <h2 style="color: #f00;">学费：{{ enrollment_obj.class_grade.course.price }}</h2>
+
+            <!-- 表单提交 -->
+            <form id="form-horizontal" method="post">{% csrf_token %}
+                <!-- 表单填写区域 -->
+                {% for field in customer_obj %}
+                    <div class="form-group">
+                        <label class="control-label">{{ field.label_tag }}</label>
+                        <div class="input-block">
+                            <span style="color: #f00;">{{ field.errors.0 }}</span>
+                            {{ field }}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="divider"></div>
+                <!-- 照片上传区域 -->
+                <h1 style="color: #f00;">在此处上传身份证正反面照</h1>
+                <div id="dropz" class="dropzone needsclick dz-clickable dz-started"></div>
+                <h2>您已上传</h2>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>名称</th>
+                        <th>图片大小</th>
+                        <th>提交时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table_upload_body"></tbody>
+                </table>
+                <div class="divider"></div>
+                <!-- 合同区 -->
+                <h2>合同签订</h2>
+                <h3>请认真阅读以下合同并同意</h3>
+                <pre class="constract_template">
+                    {{ enrollment_obj.class_grade.constract_template.content }}
+                </pre>
+                <input id="agree" type="checkbox" name="contract_agree" onclick="Agree(this)">
+                <label for="agree">我愿意无条件同意上述协议</label><br>
+                <button id="submit_btn" type="submit" class="btn btn-info">提交</button>
+                <div class="divider"></div>
+            </form>
+
+            <!--social starts-->
+            <ul class="social">
+                <li><a href="#" class="twitter"></a></li>
+                <li><a href="#" class="vimeo"></a></li>
+                <li><a href="#" class="skype"></a></li>
+                <li><a href="#" class="dribbble"></a></li>
+                <li><a href="#" class="facebook"></a></li>
+                <li><a href="#" class="pinterest"></a></li>
+            </ul>
+            <!--social ends-->
+
+        </div>
+        <!--content ends-->
+
+        <div class="clear"></div>
+    </div>
+    <script>
+        /**
+         * 表单提交
+         */
+        $("#form-horizontal").submit(() => {
+            // 检查用户是否已经上传照片
+            if ($("#table_upload_body").children().length < 2) {
+                alert('必须上传证件照');
+                return false;
+            }
+            // 将所有的disabled参数改过来
+            $(":disabled").removeAttr("disabled");
+            return true;
+        });
+
+        /**
+         * 同意协定才能提交
+         */
+        let submitBtn = $("#submit_btn");
+        // 初始化按钮状态
+        (() => {
+            if (!$("#agree").prop("checked")) {
+                submitBtn.attr("type", "button");
+                submitBtn.css({
+                    cursor: "not-allowed",
+                    backgroundColor: "#9b9b9b",
+                    color: "#000",
+                    border: "1px solid transparent",
+                });
+            }
+        })();
+
+        function Agree(self) {
+            if ($(self).prop("checked")) {
+                // 如果选中了，就可以提交
+                submitBtn.attr("type", "submit");
+                submitBtn.css({
+                    cursor: "pointer",
+                    backgroundColor: "#5bc0de",
+                    color: "#fff",
+                    borderColor: "#269abc",
+                });
+            } else {
+                submitBtn.attr("type", "button");
+                submitBtn.css({
+                    cursor: "not-allowed",
+                    backgroundColor: "#9b9b9b",
+                    color: "#000",
+                    border: "1px solid transparent",
+                });
+            }
+        }
+
+        /**
+         * dropzone提交文件
+         */
+        const myDropzone = new Dropzone("#dropz", {
+            url: "{% url 'file_upload' enrollment_id %}",
+            headers: {"X-CSRFToken": $.cookie("csrftoken")},
+            maxFiles: 2,
+            maxFilesize: 10,  // 10MB
+            acceptedFiles: ".jpg, .jpeg, .png",
+            autoProcessQueue: true, // 自动上传
+            paramName: "file",
+            dictInvalidInputType: "只允许上传jpg jpeg以及png格式的图片",
+            dictFileTooBig: "文件过大，只允许上传10MB",
+            dictCancelUpload: "已取消上传",
+            dictMaxFilesExceeded: "只允许上传最多两个图片",
+            init() {
+                this.on("success", (file, response) => {
+                    const resp = JSON.parse(response);  // 反序列化返回数据
+                    if (!resp.status) {     // 文件上传失败
+                        alert(resp['msg']);
+                    } else if (resp.status) {    // 上传成功
+                        const file_dict = resp["file_dict"];
+                        const tableBodyDom = $("#table_upload_body");
+                        let trDom = document.createElement("tr");
+                        let index_tdDom = document.createElement("td");
+                        // 获取编号
+                        index_tdDom.innerText = tableBodyDom.children().length + 1;
+                        trDom.appendChild(index_tdDom);
+                        for (let item in file_dict) {   // 循环文件信息字典
+                            let tdDom = document.createElement("td");
+                            tdDom.innerText = file_dict[item + ""];
+                            trDom.appendChild(tdDom);
+                        }
+                        let tdDom = document.createElement("td");
+                        let aDom = document.createElement("a");
+                        aDom.innerHTML = "删除";
+                        tdDom.appendChild(aDom);
+                        trDom.appendChild(tdDom);
+                        tableBodyDom.append(trDom);
+                    }
+                });
+            },
+        });
+        /**
+         * 请求文件信息
+         */
+        (() => {
+            // 发送请求获取当前文件信息
+            $.ajax({
+                url: "{% url 'file_upload' enrollment_id %}",
+                type: "put",
+                headers: {"X-CSRFToken": $.cookie("csrftoken")},
+                success(args) {
+                    if (args !== 0) {
+                        const resp = JSON.parse(args);
+                        for (let item of resp) {
+                            let trDom = document.createElement("tr");
+                            for (let file in item) {
+                                let tdDom = document.createElement("td");
+                                tdDom.innerText = item[file + ""];
+                                trDom.appendChild(tdDom);
+                            }
+                            let tdDom = document.createElement("td");
+                            let aDom = document.createElement("a");
+                            aDom.innerHTML = "删除";
+                            tdDom.appendChild(aDom);
+                            trDom.appendChild(tdDom);
+                            $("#table_upload_body").append(trDom);
+                        }
+                    }
+                },
+            });
+        })();
+
+        /**
+         * 删除图片事件
+         */
+        $("#table_upload_body").click((event) => {
+            let e = event || window.event;
+            // 获取当前被点击的元素
+            let clickDom = e.target || e.srcElement;
+            if (clickDom.localName === "a") {
+                // 点击了删除，然后获取当前列的文件名
+                let file_name = $(clickDom).parent().prev().prev().prev().html();
+                // 传到后台删除
+                $.ajax({
+                    url: "{% url 'file_upload' enrollment_id %}",
+                    headers: {"X-CSRFToken": $.cookie("csrftoken")},
+                    type: "delete",
+                    data: {"file_name": file_name},
+                    dataType: "JSON",
+                    success(args) {
+                        if (!args.status) {
+                            // 删除失败
+                            alert(args["msg"]);
+                        } else {
+                            // 删除成功，移除表格列
+                            $(clickDom).parent().parent().remove();
+                        }
+                    },
+                });
+            }
+        });
+    </script>
+{% endblock %}
+
+
+
+
+

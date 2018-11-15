@@ -1,0 +1,10 @@
+.scrollbar{overflow: hidden;}
+#page-wrapper{position: fixed; top: 76px; bottom: 0; left: 0; right: 309px;}
+
+@media all and (max-width: 1084px) {
+    #page-wrapper{right: 230px;}
+}
+
+
+
+

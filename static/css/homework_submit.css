@@ -1,0 +1,16 @@
+#wrap{margin: 0 auto; padding: 15px 25px; width: 90%; background-color: #fff; box-sizing: border-box;}
+#wrap .title{padding-bottom: 20px; margin-bottom: 30px; border-bottom: 1px solid #dedede;}
+#wrap .homework-info {margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #dedede;}
+#wrap .homework-info div{margin-bottom: 10px;}
+
+#wrap .homework-file .table-title{margin-bottom: 10px;}
+
+/* 表格样式 */
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {padding: 8px;
+    line-height: 1.42857143; vertical-align: top; border-top: 1px solid #ddd;}
+
+td, th {display: table-cell; vertical-align: inherit; max-width: 300px; overflow: auto;}
+table {display: table; border-collapse: collapse; border-spacing: 2px; border-color: grey; background-color: transparent; width: 100%;
+    max-width: 100%; margin-bottom: 20px;}
+
+

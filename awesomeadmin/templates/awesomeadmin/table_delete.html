@@ -1,0 +1,29 @@
+{% extends 'awesomeadmin/index.html' %}
+{% load awesomeadmin_tags %}
+
+
+{% block right %}
+    <div class="header">
+        <h3 class="alert alert-danger">请注意，以下数据将会被删除</h3>
+    </div>
+    <div class="delete-info">
+        {% display_delete_info obj as info %}
+        {{ info|safe }}
+    </div>
+
+    <div class="form-group">
+        <div class="btns">
+            <form method="post">{% csrf_token %}
+                <button type="submit" class="btn btn-danger">确认删除</button>
+                <a class="btn btn-default" onclick="back()">回退</a>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function back() {
+            history.back();
+        }
+    </script>
+{% endblock %}
+

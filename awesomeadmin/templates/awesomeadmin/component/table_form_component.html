@@ -1,0 +1,154 @@
+{% load awesomeadmin_tags %}
+
+<form class="form-horizontal" method="post" onsubmit="save()">{% csrf_token %}
+    {% for field in form %}
+        <div class="form-group">
+            <label class="col-sm-2 control-label">{{ field.name }}:</label>
+            <div class="col-sm-9">
+                <span style="color: red; font-weight: 700;">{{ field.errors.0 }}</span>
+                {% if field.name in admin_obj.filter_horizental %}
+                    <div class="form-inline selected-wrapper">
+                        <div class="select con-select">
+                            <div class="title">Aavailable {{ field.name }}</div>
+                            <div class="search">
+                                <i class="iconfont glyphicon glyphicon-search"></i>
+                                <input type="search" class="form-control" placeholder="Filter"
+                                       oninput="filterOption(this)">
+                            </div>
+                            <select id="{{ field.name }}_from" class="form-control" multiple
+                                    ondblclick="MoveTo(event, '{{ field.name }}_to')">
+                                {% get_related_field field.name admin_obj form as get_related_field %}
+                                {% for set in get_related_field %}
+                                    <option value="{{ set.id }}">{{ set }}</option>
+                                {% endfor %}
+                            </select>
+                            <p class="available">
+                                <span class="text" onclick="moveAll(this, '{{ field.name }}_to')">
+                                    <span>Choose all</span> <i class="glyphicon glyphicon-circle-arrow-right"></i>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="middle"></div>
+                        <div class="selected con-select">
+                            <div class="title">Chosen {{ field.name }}</div>
+                            <select id="{{ field.name }}_to" class="form-control chosen-select" name="{{ field.name }}"
+                                    multiple
+                                    ondblclick="MoveTo(event, '{{ field.name }}_from')">
+                                {% get_selected_data field.name form as selected_data %}
+                                {% for set in selected_data %}
+                                    <option value="{{ set.id }}">{{ set }}</option>
+                                {% endfor %}
+                            </select>
+                            <p class="chosen">
+                                <span class="text" onclick="moveAll(this, '{{ field.name }}_from')">
+                                    <i class="glyphicon glyphicon-circle-arrow-left"></i> <span>Remove all</span>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                {% else %}
+                    {{ field }}
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+
+    <!-- 只读字段 -->
+    {% if admin_obj.form_change %}
+        {% for field in admin_obj.read_only %}
+            <div class="form-group">
+                <label class="col-sm-2 control-label" style="color: #9b9b9b;">{{ field }}:</label>
+                <div class="col-sm-10">
+                    {% get_read_only_name form field %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="form-group btn-group">
+        <div class="delete-btn">
+            {% if admin_obj.form_change %}
+                <a class="btn btn-danger" href="{% url "table_delete" app_name table_name form.instance.id %}">Delete</a>
+            {% endif %}
+        </div>
+        <div class="save-btn">
+            <button type="submit" class="btn btn-primary">Save and add another</button>
+            <button type="submit" class="btn btn-primary">Save and continue editing</button>
+            <button type="submit" class="btn btn-info">Save</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    {% if admin_obj.filter_horizental %}
+        function MoveTo(event, _id) {
+            let e = event || window.event;
+            // 获取当前点击的元素
+            let clickDom = e.target || e.srcElement;
+            if (clickDom.localName === "option") {
+                // 克隆当前被点击的元素
+                let cloneDom = clickDom.cloneNode(true);
+                // 删除当前被点击的元素
+                clickDom.parentElement.removeChild(clickDom);
+                // 将该元素移动到选中的select框上
+                $(`#${_id}`).append($(cloneDom));
+            }
+        }
+
+        function save() {
+            // 选中所有的select多选框
+            $(".chosen-select option").prop("selected", "selected");
+            return true;
+        }
+
+        /**
+         * 给字符串添加一个方法，对字符串进行查分成单个与目标字符串进行比较
+         */
+        String.prototype.splitOnTarget = function (tar_str) {
+            // 获取调用该方法的字符串
+            let obj_str = this.toString().toLowerCase();
+            for (let i = 0; i < obj_str.length; i++) {
+                if (tar_str.toLowerCase().search(obj_str[i]) === -1) {
+                    // 出现不同的单词
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        function filterOption(self) {
+            // 获取当前输入的值
+            let value = $(self).val();
+            // 获取select的值
+            let selectDom = $(self).parent().next();
+            $(selectDom).children().each((index, item) => {
+                // 获取option里面的值
+                let text = $(item).text();
+                // 查看value中是否有值与text中的匹配
+                let rel = value.splitOnTarget(text);
+                if (rel) {
+                    // 如果全部匹配上了，就显示当前的option
+                    $(item).show();
+                } else {
+                    $(item).hide();
+                }
+            });
+        }
+
+        /**
+         * choose All
+         * Remove All
+         */
+        function moveAll(self, _id) {
+            // 获取当前select的所有节点
+            let optionDoms = $(self).parent().prev().children();
+            // 将optionDoms clone
+            let cloneDoms = optionDoms.clone();
+            // remove当前select的所有option
+            $(self).parent().prev().empty();
+            // 将当前所有的option添加到相邻的select中
+            $(`#${_id}`).append(cloneDoms);
+        }
+    {% endif %}
+</script>
+

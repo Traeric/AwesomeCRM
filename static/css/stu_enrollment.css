@@ -1,0 +1,33 @@
+#wrap .right-container{background-image: url("/static/images/enrollment_bg.jpg"); background-size: 100% 100%;}
+#wrap .head{display: flex; width: 95%; margin: 0 auto; border-bottom: 2px solid rgba(7, 17, 27, .1);}
+#wrap .head .con{flex: 1; position: relative; height: 45px; line-height: 45px; text-align: center; color: #fff; font-weight: 700;
+    font-size: 18px; text-shadow: 2px 2px 6px rgba(0, 0, 0, .6);}
+#wrap .head .con .trangle{position: absolute; top: 0; right: -45px; border-width: 22.5px; border-style: solid;
+    border-color: transparent transparent transparent transparent;}
+#wrap .head .active{background-color: #f0ad4e;}
+#wrap .head .active .trangle{border-color: transparent transparent transparent #f0ad4e;}
+#wrap .body{height: 450px; border-bottom: 2px solid #f0ad4e; overflow: auto;}
+#wrap .body .body-inner{width: 70%; margin: 100px auto;}
+#wrap .body .body-inner .title{margin-bottom: 60px; text-align: center; color: #000; text-shadow: 2px 2px 4px rgba(0, 0, 0, .8);}
+#wrap .body .body-inner form{margin-bottom: 60px;}
+#wrap .footer{height: 100px; overflow: hidden;}
+#wrap .footer-inner{margin: 35px auto; width: 90%;}
+#enrollment_link{border: none; background-color: #fff; outline: none;}
+.copy-pannel{position: relative;}
+.copy-pannel .warn{position: absolute; right: 26px; bottom: 22px; z-index: -10; opacity: 1; transition: all 2s; font-weight: 700;}
+
+
+.title{margin: 30px 0 0 30px;}
+.title h1{color: #9b9b9b;}
+#wrap{display: flex; margin: 60px auto; width: 95%;}
+#wrap .left-container{flex: 0 0 400px; background-image: url("/static/images/enrollment_bg1.png"); background-size: 100% 100%;
+    border: 1px solid #030d4a; border-right: none;}
+#wrap .right-container{flex: 1;}
+#wrap .left-container .info{margin: 37px 55px; width: 289px; height: 503px;}
+#wrap .left-container .info .title{margin: 60px auto 20px; width: 100%; height: 60px; line-height: 60px; text-align: center; font-size: 24px;
+    font-weight: 700; color: #2da7d6;}
+#wrap .left-container .info .middle-img{margin: 10px auto; width: 100px; height: 100px; border-radius: 50%; overflow: hidden;}
+#wrap .left-container .info .footer{margin-top: 30px; width: 100%; line-height: 30px; text-align: center; color: #2da7d6;}
+#wrap .left-container .info .footer span{font-size: 20px; font-weight: 700; color: #f00;}
+
+

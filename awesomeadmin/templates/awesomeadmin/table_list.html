@@ -1,0 +1,146 @@
+{% extends "awesomeadmin/index.html" %}
+{% load awesomeadmin_tags %}
+{% load staticfiles %}
+
+{% block header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/table_list.css' %}">
+{% endblock %}
+
+
+{% block right %}
+    <div class="page-header">
+        <h1>{% get_table_name admin_obj %}表
+            <small>Operate your table</small>
+        </h1>
+    </div>
+    <div class="title">
+    </div>
+    <div id="wrapper">
+        <div class="title clearfix">
+            <div class="title-left">Welcome to <span>{% get_table_name admin_obj %}</span> 表</div>
+            <div class="title-right">
+                <span class="icon">
+                    <i class="glyphicon glyphicon-plus-sign"></i>
+                </span>
+                <a class="add-btn" href="{% url 'table_add' app_name table_name %}">
+                    添加{% get_table_name admin_obj %}
+                </a>
+            </div>
+        </div>
+        <!-- 搜索 -->
+        <div class="search-block">
+            {% if admin_obj.search_fields %}
+                <form>
+                    <div class="s-b-block">
+                        <i class="iconfont glyphicon glyphicon-search"></i>
+                        <input class="search-input form-control" type="search" name="source" value="{{ source }}">
+                        {% for key, val in admin_obj.filter_dict.items %}
+                            <input type="hidden" name="{{ key }}" value="{{ val }}">
+                        {% endfor %}
+                        <div class="search-btn">
+                            <button class="btn" type="submit">Search</button>
+                        </div>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+        <!-- 过滤 -->
+        <div class="filter-block">
+            {% if admin_obj.filter_list %}
+                <div class="filter">
+                    <form class="form-inline">
+                        {% for filter_cloumn in admin_obj.filter_list %}
+                            <label>{{ filter_cloumn }}：</label>
+                            {% filter_col filter_cloumn admin_obj %}
+                        {% endfor %}
+                        <input type="hidden" name="_o" value="{% union_params request query_data admin_obj 0 %}">
+                        <input type="hidden" name="page" value="{% union_params request query_data admin_obj 1 %}">
+                        <input type="submit" value="Filter" class="btn filter-btn">
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+        <!-- action批量操作 -->
+        <div class="action-block">
+            <form id="action_form" class="form-inline" method="post">{% csrf_token %}
+                <div class="form-group">
+                    <label>Action：</label>
+                    <select name="action" class="form-control">
+                        <option value="">-----------------------</option>
+                        {% for action_item in admin_obj.action.items %}
+                            <option value="{{ action_item.0 }}">{{ action_item.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-default">Go</button>
+            </form>
+        </div>
+        <!-- 表格 -->
+        <div class="table-block">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" onclick="getCheck(this)"></th>
+                    {% if admin_obj.list_display %}
+                        {% for column in admin_obj.list_display %}
+                            <th>
+                                <a href="?_o={% sorted_regulation request forloop.counter0 %}{% union_params request query_data admin_obj 3 %}">{{ column }}</a>
+                                {% arrow_display request forloop.counter0 %}
+                            </th>
+                        {% endfor %}
+                    {% else %}
+                        <th>{% get_table_name admin_obj %}</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for setItem in query_data %}
+                    <tr>{% get_column setItem admin_obj.list_display %}</tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- 分页 -->
+        <div class="pagination">
+            <nav aria-label="...">
+                {% paginator_button query_data 5 request admin_obj %}
+            </nav>
+            <span>{{ query_data.paginator.num_pages }} customer info(s)</span>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        /**
+         *  全选或者全不选
+         */
+        function getCheck(self) {
+            // 获取当前的选中状态
+            const status = $(self).prop('checked');
+            $("input[check-tag]").prop('checked', status);
+        }
+
+        /**
+         * 在表单提交之前，需要获取到所有已经选中的记录，并且以列表的形式将所有已选列的id放到一个隐藏的input域中
+         */
+        $("#action_form").submit(function () {
+            // 获取所有选中的列
+            let checkedDom = $("input[check-tag]").filter(":checked");
+            let checkArray = [];
+            $(checkedDom).each((index, item) => {
+                checkArray.push($(item).val());
+            });
+            // 放到表单中
+            let inputDom = document.createElement('input');
+            inputDom.name = 'checkedItem';
+            inputDom.type = 'hidden';
+            inputDom.value = JSON.stringify(checkArray);
+            $(this).prepend(inputDom);
+
+            return true;
+        });
+    </script>
+{% endblock %}
+

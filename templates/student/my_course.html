@@ -1,0 +1,45 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+{% block header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/my_course.css' %}">
+{% endblock %}
+
+{% block right %}
+    <div class="page-header">
+        <h1>CRM-我的课程
+            <small>学而不思则罔，思而不学则殆</small>
+        </h1>
+    </div>
+    <div id="wrap">
+        <div class="title">课程列表</div>
+        <div class="course-title">
+            <div class="con">课程</div>
+            <div class="con">类型</div>
+            <div class="con">开课日期</div>
+            <div class="con">开课总节次</div>
+            <div class="con">已上节次</div>
+            <div class="con">成绩排名</div>
+            <div class="con">详细</div>
+        </div>
+        <!-- 详细条目 -->
+        {% for item in class_objs %}
+            <div class="item">
+                <div class="course con">{{ item.course.name }}</div>
+                <div class="type con">{{ item.get_class_type_display }}</div>
+                <div class="date con">{{ item.start_date }}</div>
+                <div class="total_count con">{{ item.course.period }}</div>
+                <div class="take_count con">{{ item.courserecord_set.count }}</div>
+                <div class="rank con"><a href="javascript:void(0);">课程排名</a></div>
+                <div class="details con"><a href="{% url 'homework' item.course.id %}">作业管理</a></div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+
+
+
+

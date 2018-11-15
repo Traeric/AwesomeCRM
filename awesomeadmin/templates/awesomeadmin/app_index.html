@@ -1,0 +1,26 @@
+{% extends "awesomeadmin/index.html" %}
+
+
+{% block right %}
+    {% for app_name, app_tables in site.items %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>{{ app_name }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for table in app_tables %}
+                <tr>
+                    <td><a href="{% url 'table_list' app_name table %}">{{ table }}</a></td>
+                    <td>ADD</td>
+                    <td>DEL</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endblock %}
+
+
+

@@ -1,0 +1,28 @@
+#form-horizontal label{font-weight: 700;}
+#form-horizontal .form-group{display: flex; margin-top: 60px;}
+#form-horizontal .form-group .control-label{flex: 0 0 200px; text-align: center; line-height: 34px;}
+#form-horizontal .form-group .input-block{flex: 1; text-align: left;}
+#form-horizontal .form-group .input-block .form-control{display: block; padding: 6px 12px; min-height: 34px; width: 100%;
+    line-height: 1.42857143; font-size: 14px; color: #555; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;
+    box-sizing: border-box;}
+#form-horizontal .btn-info{display: inline-block; padding: 6px 12px; font-size: 14px; font-weight: 400; line-height: 1.42857143;
+    text-align: center; white-space: nowrap; vertical-align: middle; touch-action: manipulation; cursor: pointer; user-select: none;
+    background-image: none; border: 1px solid transparent; border-radius: 4px;}
+#form-horizontal .btn-info{color: #fff; background-color: #5bc0de; border-color: #46b8da; margin-top: 30px; margin-bottom: 5px;}
+#form-horizontal .btn-info:hover{color: #fff; background-color: #31b0d5; border-color: #269abc; margin-top: 30px; margin-bottom: 5px;}
+
+.constract_template{margin-top: 30px; width: 100%; overflow: auto;}
+
+/* 浏览器样式 */
+::-webkit-scrollbar {
+    width: 0;
+}
+/* 表格样式 */
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {padding: 8px;
+    line-height: 1.42857143; vertical-align: top; border-top: 1px solid #ddd;}
+
+td, th {display: table-cell; vertical-align: inherit; max-width: 300px; overflow: auto;}
+table {display: table; border-collapse: separate; border-spacing: 2px; border-color: grey; background-color: transparent; width: 100%;
+    max-width: 100%; margin-bottom: 20px;}
+
+

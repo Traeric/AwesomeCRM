@@ -1,0 +1,104 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+{% block header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/homework_submit.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/dropzone/css/dropzone.css' %}">
+    <script src="{% static 'plugins/dropzone/js/dropzone.js' %}"></script>
+{% endblock %}
+
+{% block right %}
+    <div class="page-header">
+        <h1>CRM-{{ study_record.course.name }}第{{ study_record.course_record.id }}次课 --
+            <span style="color: #f90;">{{ study_record.student.user.name }}</span>
+            <small>学而时习之，可以为师矣。</small>
+        </h1>
+    </div>
+    <div id="wrap">
+        <div class="title">
+            {{ study_record.student.user.name }}的作业
+        </div>
+        <div class="homework-info">
+            <div class="score">
+                <span>TA的成绩：</span>
+                <select id="score_hook" name="score">
+                    <option value="">------</option>
+                    {% for item in study_record.score_choices %}
+                        {% if item.0 == study_record.score %}
+                            <option value="{{ item.0 }}" selected>{{ item.1 }}</option>
+                        {% else %}
+                            <option value="{{ item.0 }}">{{ item.1 }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="homework-title">
+                作业题目：{{ study_record.course_record.title }}
+            </div>
+            <div class="homework-need">
+                作业需求：
+            </div>
+            <div class="need-show">
+                <div class="alert alert-warning" role="alert">{{ study_record.course_record.homework }}</div>
+            </div>
+        </div>
+        <div class="homework-file">
+            <div class="table-title">TA的作业：</div>
+            <div class="table">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>文件名</th>
+                            <th>文件大小(kb)</th>
+                            <th>上传时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="file_tbody">
+                        {% for item in file_list %}
+                            <tr>
+                                <th>{{ item.file_name }}</th>
+                                <th>{{ item.file_size }}</th>
+                                <th>{{ item.file_ctime }}</th>
+                                <th>
+                                    <a href="{% url 'download_file' study_record.course_record.id study_record.student.id %}?file_name={{ item.file_name }}">
+                                        下载
+                                    </a>
+                                </th>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * 评分
+         */
+        $("#score_hook").change(() => {
+            // 获取分数
+            let score = $("#score_hook option:selected").val();
+            if (score) {
+                // 将分数发送修改
+                $.ajax({
+                    type: "post",
+                    data: {"score": score},
+                    dataType: "JSON",
+                    headers: {"X-CSRFToken": $.cookie("csrftoken")},
+                    success(args) {
+                        alert(args.msg);
+                    },
+                });
+            }
+        });
+    </script>
+{% endblock %}
+
+
+
+
+
+

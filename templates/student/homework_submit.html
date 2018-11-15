@@ -1,0 +1,149 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+{% block header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/homework_submit.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/dropzone/css/dropzone.css' %}">
+    <script src="{% static 'plugins/dropzone/js/dropzone.js' %}"></script>
+{% endblock %}
+
+{% block right %}
+    <div class="page-header">
+        <h1>CRM-作业详情
+            <small>
+                {{ study_record.course.name }}
+                第{{ study_record.course_record.day_num }}天
+                <span style="color: #f00;">
+                    {% if study_record.score %}
+                        checked
+                    {% else %}
+                        waite for check
+                    {% endif %}
+                </span>
+                {% if study_record.score %}
+                    成绩：<span style="color: #f90">{{ study_record.get_score_display }}</span>
+                {% endif %}
+            </small>
+        </h1>
+    </div>
+    <div id="wrap">
+        <div class="title">
+            {{ study_record.course.name }} 第{{ study_record.course_record.day_num }}天
+        </div>
+        <div class="homework-info">
+            {% if study_record.score %}
+                <div class="score">我的成绩：<span style="color: #f90">{{ study_record.get_score_display }}</span></div>
+            {% endif %}
+            <div class="homework-title">
+                作业题目：{{ study_record.course_record.title }}
+            </div>
+            <div class="homework-need">
+                作业需求：
+            </div>
+            <div class="need-show">
+                <div class="alert alert-warning" role="alert">{{ study_record.course_record.homework }}</div>
+            </div>
+        </div>
+        <div class="homework-file">
+            <div class="table-title">已上传文件列表：</div>
+            <div class="table">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>文件名</th>
+                            <th>文件大小(kb)</th>
+                            <th>上传时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="file_tbody">
+                        {% for item in file_list %}
+                            <tr>
+                                <th>{{ item.file_name }}</th>
+                                <th>{{ item.file_size }}</th>
+                                <th>{{ item.file_ctime }}</th>
+                                <th><a href="javascript:void(0);" onclick="deleteFile(this)">删除</a></th>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- 文件上传区 -->
+            <div id="dropz" class="dropzone needsclick dz-clickable dz-started"></div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * dropzone提交文件
+         */
+        const myDropzone = new Dropzone("#dropz", {
+            url: "{% url 'submit_homework' study_record.id %}",
+            headers: {"X-CSRFToken": $.cookie("csrftoken")},
+            maxFiles: 2,
+            maxFilesize: 10,  // 10MB
+            dictDefaultMessage: "拖拽上传文件",
+            acceptedFiles: ".jpg, .jpeg, .png, .zip, .rar, .tar",
+            autoProcessQueue: true, // 自动上传
+            paramName: "file",
+            dictInvalidInputType: "只允许上传jpg jpeg以及png格式的图片",
+            dictFileTooBig: "文件过大，只允许上传10MB",
+            dictCancelUpload: "已取消上传",
+            dictMaxFilesExceeded: "只允许上传最多两个图片",
+            init() {
+                this.on("success", (file, response) => {
+                    if (response * 1 === 0) {
+                        alert("最多只能上传两个文件");
+                        return;
+                    }
+                    // 将上传的文件进行展示
+                    let file_obj = JSON.parse(response);
+                    let trDom = document.createElement("tr");
+                    for (let item in file_obj) {
+                        let thDom = document.createElement("th");
+                        thDom.innerHTML = file_obj[item + ''];
+                        trDom.appendChild(thDom);
+                    }
+                    // 添加删除标签
+                    let thDom = document.createElement("th");
+                    let aDom = document.createElement("a");
+                    aDom.href = "";
+                    aDom.innerHTML = "删除";
+                    thDom.appendChild(aDom);
+                    trDom.appendChild(thDom);
+                    $("#file_tbody").append(trDom);
+                });
+            },
+        });
+        /**
+         * 删除文件
+         */
+        function deleteFile(self) {
+            // 获取删除的文件名
+            let del_file_name = $(self).parent().parent().children().eq(0).html();
+            // 发送ajax请求
+            $.ajax({
+                url: "{% url 'submit_homework' study_record_id %}",
+                type: "delete",
+                headers: {"X-CSRFToken": $.cookie("csrftoken")},
+                data: {"del_file_name": del_file_name},
+                dataType: "JSON",
+                success(args) {
+                    if (args.status) {
+                        // 删除成功，删除当前列
+                        $(self).parent().parent().remove();
+                    } else {
+                        alert(args.msg);
+                    }
+                }
+            });
+        }
+    </script>
+{% endblock %}
+
+
+
+
+
+

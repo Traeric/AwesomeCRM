@@ -1,0 +1,62 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+{% load teacher_tags %}
+
+{% block header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/my_course.css' %}">
+{% endblock %}
+
+{% block right %}
+    <div class="page-header">
+        <h1>CRM-班级学员列表
+            <small>三人行，必有我师焉</small>
+        </h1>
+    </div>
+    <div id="wrap">
+        <div class="title">{{ clazz.course.name }}</div>
+        <div class="course-title">
+            <div class="con">学员id</div>
+            <div class="con">邮箱</div>
+            <div class="con">姓名</div>
+            <div class="con">报名日期</div>
+            <div class="con">成绩</div>
+            <div class="con">班级排名</div>
+            <div class="con">出勤次数</div>
+            <div class="con">迟到次数</div>
+            <div class="con">缺勤次数</div>
+            <div class="con">详细</div>
+        </div>
+        <!-- 详细条目 -->
+        {% for item in student_list %}
+            <div class="item">
+                <!-- 学员id -->
+                <div class="course con">{{ item.id }}</div>
+                <!-- 邮箱 -->
+                <div class="type con">{{ item.user.email }}</div>
+                <!-- 姓名 -->
+                <div class="date con">{{ item.user.name }}</div>
+                <!-- 报名日期 -->
+                <div class="total_count con">{{ item.customer.studentenrollment.contract_signed_date | date:'Y-m-d' }}</div>
+                <!-- 成绩(平均成绩) -->
+                <div class="take_count con">{% get_score item %}</div>
+                <!-- 成绩排名 -->
+                <div class="rank con">{% get_sort item course %}</div>
+                <!-- 出勤次数 -->
+                <div class="rank con">{% on_time_count item 1 %}</div>
+                <!-- 迟到次数 -->
+                <div class="rank con">{% on_time_count item 2 %}</div>
+                <!-- 缺勤次数 -->
+                <div class="rank con">{% on_time_count item 0 %}</div>
+                <div class="details con"><a href="javascript:void(0);">详细</a></div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+
+
+
+
+

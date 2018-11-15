@@ -1,0 +1,64 @@
+{% extends 'sale/stu_enrollment.html' %}
+{% load staticfiles %}
+
+
+{% block header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/enrollment_success.css' %}">
+{% endblock %}
+
+{% block body_form_container %}
+    <div class="success-title">报名成功</div>
+    <div class="middle-msg">
+        <div class="info">客户{{ enrollment_obj.customer.name }}已经成为学员</div>
+        <div class="info">
+            账户名：<span class="account-info">{{ enrollment_obj.customer.email}}</span>
+            初始密码：<span class="account-info">0000</span>
+        </div>
+        <div class="info">请点击下面按钮为其发送邮件</div>
+        <div class="info"><button id="email_btn" class="send-email">发送邮件</button></div>
+    </div>
+
+
+    <script>
+        /**
+         * 修改顶部样式
+         */
+        (() => {
+            $(".right-container .head .con").removeClass("active");
+            $(".right-container .head .con:eq(2)").addClass("active");
+        })();
+        window.onload = function() {
+            $("#next_btn").remove();
+        };
+
+
+        /**
+         * 发送邮件
+         */
+        $("#email_btn").click(() => {
+            const send = confirm("是否确定给学员发送邮件？");
+            if (send) {
+                // 确定发送邮件
+                $.ajax({
+                    type: "post",
+                    headers: {"X-CSRFToken": $.cookie("csrftoken")},
+                    dataType: "JSON",
+                    success(args) {
+                        if (!args.status) {     // 未发送成功
+                            alert(args["msg"]);
+                        } else {
+                            alert(args['msg']);
+                            // 发送成功返回客户库
+                            window.location.href = "{% url 'table_list' 'repository' 'customerinfo' %}";
+                        }
+                    },
+                });
+            }
+        });
+    </script>
+{% endblock %}
+
+
+
+

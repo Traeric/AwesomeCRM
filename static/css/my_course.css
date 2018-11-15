@@ -1,0 +1,10 @@
+#wrap{margin: 0 auto; padding: 15px 25px; width: 90%; background-color: #fff; box-sizing: border-box;}
+#wrap .title{padding-bottom: 20px; color: #7d7d7d; font-size: 18px; font-weight: 700; border-bottom: 1px solid #dedede;}
+#wrap .course-title{display: flex; margin: 15px 0 10px 0;}
+#wrap .course-title .con{flex: 1; text-align: center; color: #000; font-weight: 700;}
+
+#wrap .item{display: flex; padding-top: 10px; border-top: 1px solid rgba(120, 120, 120, 0.31);}
+#wrap .item .con{flex: 1; text-align: center;}
+
+
+

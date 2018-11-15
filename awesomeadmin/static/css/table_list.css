@@ -1,0 +1,34 @@
+.clearfix:after{content: ""; display: block; clear: both;}
+#wrapper{margin: 60px auto; padding: 15px 20px; width: 95%; background-color: #fff; overflow: hidden; border-radius: 8px;}
+#wrapper .title{border-bottom: 1px solid #dedede; margin-bottom: 20px; padding-bottom: 20px; box-sizing: border-box;}
+#wrapper .title .title-left{float: left; color: #9b9b9b;}
+#wrapper .title .title-left span{color: #4a4a4a;}
+#wrapper .title .title-right{float: right; height: 100%;}
+#wrapper .title .title-right .icon{padding: 10px 10px 10px 12px; background-color: #3ca81d;}
+#wrapper .title .title-right .icon i{color: #fff;}
+#wrapper .title .title-right .add-btn{padding: 10px 15px; background-color: #8BC34A; color: #fff; text-decoration: none; transition: none;}
+#wrapper .title .title-right .add-btn:hover{background-color: #a6c433;}
+#wrapper input{border-radius: 4px;}
+#wrapper select{border-radius: 4px;}
+
+#wrapper .search-block{margin-bottom: 10px;}
+#wrapper .search-block .s-b-block{display: flex; height: 60px;}
+#wrapper .search-block .s-b-block .iconfont{flex: 0 0 60px; text-align: center; line-height: 60px; color: #ffb142;}
+#wrapper .search-block .s-b-block .search-input{flex: 1; margin-top: 13px;}
+#wrapper .search-block .s-b-block .search-btn{flex: 0 0 300px; padding-left: 30px;}
+#wrapper .search-block .s-b-block .search-btn button{margin-top: 13px; height: 34px; width: 120px; color: #fff; font-weight: 700;
+    background-color: #8BC34A;}
+#wrapper .search-block .s-b-block .search-btn button:hover{background-color: #9bdb5a;}
+
+#wrapper .filter-block{margin-bottom: 15px;}
+#wrapper .filter-block label{font-weight: 700;}
+#wrapper .filter-block{margin-left: 20px;}
+#wrapper .filter-block .filter .filter-btn{background-color: #5bc0de; color: #fff; font-weight: 700;}
+#wrapper .filter-block .filter .filter-btn:hover{background-color: #1eacde;}
+
+#wrapper .action-block{margin: 0 0 15px 20px;}
+#wrapper .action-block label{font-weight: 700;}
+
+#wrapper .table-block{margin-left: 20px;}
+
+#wrapper .pagination{margin-left: 20px;}

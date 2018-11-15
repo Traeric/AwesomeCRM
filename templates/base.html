@@ -1,0 +1,43 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!-- saved from url=(0042)https://v3.bootcss.com/examples/dashboard/ -->
+<html lang="zh-CN">
+<head>
+    {% block header %}
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>AwesomeCRM</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <!-- 兼容IE10 -->
+        <link href="{% static 'template/public/css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="{% static 'template/dashboard/css/style.css' %}" rel="stylesheet">
+        <link href="{% static 'template/dashboard/css/font-awesome.css' %}" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    {% endblock %}
+    <script src="{% static 'template/public/js/jquery_1.12.4_jquery.min.js' %}"></script>
+    <script src="{% static 'template/public/js/jquery.cookie.js' %}"></script>
+</head>
+
+<body>
+{% block body %}
+{% endblock %}
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script>window.jQuery || document.write('<script src="/static/template/enrollment//static/template/enrollment/assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="{% static 'template/public/js/ie10-viewport-bug-workaround.js' %}"></script>
+</body>
+</html>

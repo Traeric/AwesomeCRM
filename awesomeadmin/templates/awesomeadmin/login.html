@@ -1,0 +1,47 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>Login Of AwesomeAdmin</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="{% static 'template/public/css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'template/login/css/signin.css' %}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="container">
+    <form class="form-signin" method="post">{% csrf_token %}
+        <h2 class="form-signin-heading">AwesomeAdmin Login</h2>
+        <span style="color: red;">{{ error_msg }}</span>
+        <label for="inputUser" class="sr-only">Username</label>
+        <input type="text" id="inputUser" class="form-control" placeholder="Username" name="username" required
+               autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+
+</div> <!-- /container -->
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="{% static 'template/public/js/ie10-viewport-bug-workaround.js' %}"></script>
+</body>
+</html>

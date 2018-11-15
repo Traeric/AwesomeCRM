@@ -1,0 +1,46 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+{% block header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/my_course.css' %}">
+{% endblock %}
+
+{% block right %}
+    <div class="page-header">
+        <h1>CRM-上课记录
+            <small>三个臭皮匠，顶个诸葛亮！</small>
+        </h1>
+    </div>
+    <div id="wrap">
+        <div class="title">
+            {{ course_record.0.class_grade.course.name }}上课记录
+            <a class="btn btn-success" href="{% url 'table_add' "repository" "courserecord" %}">添加上课记录</a>
+        </div>
+        <div class="course-title">
+            <div class="con">上课记录id</div>
+            <div class="con">名称</div>
+            <div class="con">上课班级</div>
+            <div class="con">批改作业</div>
+        </div>
+        <!-- 详细条目 -->
+        {% for item in course_record %}
+            <div class="item">
+                <div class="course con">{{ item.id }}</div>
+                <div class="type con">第{{ item.id }}次上课记录</div>
+                <div class="date con">{{ course_record.0.class_grade.course.name }}</div>
+                <div class="total_count con">
+                    {% if item.has_homework %}
+                        <a href="{% url 'check_homework' item.id %}">批改作业</a>
+                    {% else %}
+                        <span>无作业</span>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+
+

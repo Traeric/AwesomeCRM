@@ -1,0 +1,85 @@
+{% extends 'sale/stu_enrollment.html' %}
+{% load staticfiles %}
+
+
+{% block header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/enrollment_contract_aprove.css' %}">
+{% endblock %}
+
+{% block body_form_container %}
+    <span class="title">请销售认真审核客户报名信息</span>
+    {{ customer_form }}
+    {{ enrollment_form }}
+    <div id="btn_area">
+        <div class="no-permit">
+            <button class="no" onclick="permit()">驳回重填</button>
+        </div>
+        <div class="permit">
+            <button class="yes" onclick="permit()">审核通过</button>
+        </div>
+    </div>
+    <script>
+        /**
+         * 修改顶部样式
+         */
+        (() => {
+            $(".right-container .head .con").removeClass("active");
+            $(".right-container .head .con:eq(1)").addClass("active");
+        })();
+        window.onload = function () {
+            const btnDom = $("#next_btn");
+            btnDom.attr("title", "请先审核");
+            // 判断是否已经审核
+            if ($("input[name=contract_approved]").prop("checked")) {
+                btnDom.css({
+                    cursor: "pointer",
+                    backgroundColor: "#8BC34A",
+                    color: "#fff",
+                    border: "1px solid #5dc32e",
+                });
+                btnDom.attr("title", "");
+                btnDom.attr("href", "/sale/stu_enrollment/" + {{ enrollment_id }} + "/success")
+            }
+        };
+
+        /**
+         * 发送审核结果
+         */
+        function permit() {
+            // 获取两个同意的状态
+            const contract_agree = $("input[name=contract_agree]").prop("checked");
+            const contract_approved = $("input[name=contract_approved]").prop("checked");
+            if ((contract_agree && !contract_approved) || (!contract_agree && contract_approved)) {
+                alert("审核逻辑错误");
+                return;
+            }
+            // 逻辑正确，将数据状态修改
+            $.ajax({
+                type: "put",
+                headers: {
+                    "X-CSRFToken": $.cookie("csrftoken"),
+                },
+                data: {
+                    'contract_agree': contract_agree,
+                    'contract_approved': contract_approved,
+                },
+                success(args) {
+                    if (args) {
+                        if (contract_agree && contract_approved) {
+                            // 报名成功
+                            window.location.href = "/sale/stu_enrollment/" + args + "/success";
+                        } else {
+                            // 驳回重填
+                            window.location.reload();
+                        }
+                    }
+                },
+            });
+        }
+    </script>
+{% endblock %}
+
+
+
+

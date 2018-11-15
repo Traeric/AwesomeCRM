@@ -1,0 +1,26 @@
+{% extends "awesomeadmin/index.html" %}
+{% load awesomeadmin_tags %}
+{% load staticfiles %}
+
+
+{% block header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/table_add.css' %}">
+{% endblock %}
+
+
+{% block right %}
+    <div id="black-box">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="javascript:void(0);">From {% get_table_name admin_obj %} To Change {{ form.instance }}</a>
+                </div>
+            </div>
+        </nav>
+        <div class="inner-box">
+            {% include "awesomeadmin/component/table_form_component.html" %}
+        </div>
+    </div>
+{% endblock %}
+
