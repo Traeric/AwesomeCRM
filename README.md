@@ -28,4 +28,34 @@ sqlite3
 
 ## 项目展示
 
+__销售页面__
+销售可以查看客户库，客户库可以进行一系列查询操作，可以在代码中自定义
+![customerInfo]()
+
+添加客户，这是根据Django的ModelForm自动生成的
+![customer add]()
+
+客户报名
+![studnt emrollment]()
+
+客户填写报名表
+![emrollment1]()
+![enrollment2]()
+
+__学生页面__
+提交作业
+![submit homework]()
+
+__老师页面__
+管理班级
+![manage class]()
+
+查看上课记录
+![course record]()
+
+检查作业
+![check homework]()
+
+这里拎了几个比较重要的页面，还有很多页面不做赘述
+
 
